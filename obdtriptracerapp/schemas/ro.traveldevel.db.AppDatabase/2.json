@@ -1,0 +1,147 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 2,
+    "identityHash": "83bf8bef5de82013501136517d9fed6c",
+    "entities": [
+      {
+        "tableName": "OBD2Record",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `sent` INTEGER NOT NULL, `obdVin` TEXT, `date` INTEGER, `obdSpeed` INTEGER NOT NULL, `obdRpm` INTEGER NOT NULL, `obdThrotlePosition` INTEGER NOT NULL, `obdEngineLoad` INTEGER NOT NULL, `obdCoolantTemp` INTEGER NOT NULL, `gpsLatitude` REAL NOT NULL, `gpsLongitude` REAL NOT NULL, `gpsAltitude` INTEGER NOT NULL, `gpsSpeed` INTEGER NOT NULL, `gpsBearing` INTEGER NOT NULL, `gpsAccuracy` INTEGER NOT NULL, `orientDir` TEXT, `accelerationX` REAL NOT NULL, `accelerationY` REAL NOT NULL, `accelerationZ` REAL NOT NULL, `accelerationTotal` REAL NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sent",
+            "columnName": "sent",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "obdVin",
+            "columnName": "obdVin",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "obdSpeed",
+            "columnName": "obdSpeed",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "obdRpm",
+            "columnName": "obdRpm",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "obdThrotlePosition",
+            "columnName": "obdThrotlePosition",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "obdEngineLoad",
+            "columnName": "obdEngineLoad",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "obdCoolantTemp",
+            "columnName": "obdCoolantTemp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "gpsLatitude",
+            "columnName": "gpsLatitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "gpsLongitude",
+            "columnName": "gpsLongitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "gpsAltitude",
+            "columnName": "gpsAltitude",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "gpsSpeed",
+            "columnName": "gpsSpeed",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "gpsBearing",
+            "columnName": "gpsBearing",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "gpsAccuracy",
+            "columnName": "gpsAccuracy",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "orientDir",
+            "columnName": "orientDir",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "accelerationX",
+            "columnName": "accelerationX",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "accelerationY",
+            "columnName": "accelerationY",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "accelerationZ",
+            "columnName": "accelerationZ",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "accelerationTotal",
+            "columnName": "accelerationTotal",
+            "affinity": "REAL",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"83bf8bef5de82013501136517d9fed6c\")"
+    ]
+  }
+}

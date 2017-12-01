@@ -1,0 +1,233 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "2a5196d3b4f767bc44db626abf190be5",
+    "entities": [
+      {
+        "tableName": "OBD2Record",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `sent` INTEGER NOT NULL, `obdVin` TEXT, `UTCTicks` INTEGER NOT NULL, `manualOdometer` INTEGER NOT NULL, `obdSpeed` INTEGER NOT NULL, `obdRpm` INTEGER NOT NULL, `obdThrotlePosition` INTEGER NOT NULL, `obdEngineLoad` INTEGER NOT NULL, `obdCoolantTemp` INTEGER NOT NULL, `obdOilTemp` INTEGER NOT NULL, `gpsLatitude` REAL NOT NULL, `gpsLongitude` REAL NOT NULL, `gpsAltitude` INTEGER NOT NULL, `gpsSpeed` INTEGER NOT NULL, `gpsBearing` INTEGER NOT NULL, `gpsAccuracy` INTEGER NOT NULL, `orientDir` TEXT, `accelerationX` REAL NOT NULL, `accelerationY` REAL NOT NULL, `accelerationZ` REAL NOT NULL, `accelerationTotal` REAL NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sent",
+            "columnName": "sent",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "obdVin",
+            "columnName": "obdVin",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "UTCTicks",
+            "columnName": "UTCTicks",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "manualOdometer",
+            "columnName": "manualOdometer",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "obdSpeed",
+            "columnName": "obdSpeed",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "obdRpm",
+            "columnName": "obdRpm",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "obdThrotlePosition",
+            "columnName": "obdThrotlePosition",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "obdEngineLoad",
+            "columnName": "obdEngineLoad",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "obdCoolantTemp",
+            "columnName": "obdCoolantTemp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "obdOilTemp",
+            "columnName": "obdOilTemp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "gpsLatitude",
+            "columnName": "gpsLatitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "gpsLongitude",
+            "columnName": "gpsLongitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "gpsAltitude",
+            "columnName": "gpsAltitude",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "gpsSpeed",
+            "columnName": "gpsSpeed",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "gpsBearing",
+            "columnName": "gpsBearing",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "gpsAccuracy",
+            "columnName": "gpsAccuracy",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "orientDir",
+            "columnName": "orientDir",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "accelerationX",
+            "columnName": "accelerationX",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "accelerationY",
+            "columnName": "accelerationY",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "accelerationZ",
+            "columnName": "accelerationZ",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "accelerationTotal",
+            "columnName": "accelerationTotal",
+            "affinity": "REAL",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "OBD2Trip",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `sent` INTEGER NOT NULL, `obdVin` TEXT, `startUTCTicks` INTEGER NOT NULL, `endUTCTicks` INTEGER NOT NULL, `totalMinutes` REAL NOT NULL, `manualStartOdometer` INTEGER NOT NULL, `estimatedEndOdometer` INTEGER NOT NULL, `estimatedDistance` REAL NOT NULL, `averageSpeed` REAL NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sent",
+            "columnName": "sent",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "obdVin",
+            "columnName": "obdVin",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "startUTCTicks",
+            "columnName": "startUTCTicks",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "endUTCTicks",
+            "columnName": "endUTCTicks",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "totalMinutes",
+            "columnName": "totalMinutes",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "manualStartOdometer",
+            "columnName": "manualStartOdometer",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "estimatedEndOdometer",
+            "columnName": "estimatedEndOdometer",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "estimatedDistance",
+            "columnName": "estimatedDistance",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "averageSpeed",
+            "columnName": "averageSpeed",
+            "affinity": "REAL",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"2a5196d3b4f767bc44db626abf190be5\")"
+    ]
+  }
+}

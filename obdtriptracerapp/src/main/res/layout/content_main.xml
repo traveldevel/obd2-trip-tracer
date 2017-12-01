@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="ro.traveldevel.obdtriptracerapp.MainActivity"
+    tools:showIn="@layout/activity_main">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <CheckBox
+            android:id="@+id/orientSensorCheckbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Orientation Sensor exists" />
+
+        <CheckBox
+            android:id="@+id/accelerometerSensorCheckbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Accelerometer sensor is present" />
+
+        <CheckBox
+            android:id="@+id/gpsIsEnabledCheckbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="GPS is enabled" />
+
+        <CheckBox
+            android:id="@+id/buletoothOnCheckbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Bluetooth is ON" />
+
+        <CheckBox
+            android:id="@+id/obd2IsPairedCheckbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="OBD2 Is Paired" />
+
+        <CheckBox
+            android:id="@+id/internetConnectedCheckbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Is Connected to Internet" />
+
+        <CheckBox
+            android:id="@+id/receivingObd2DataCheckbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Receiving OBD2 measures" />
+
+        <EditText
+            android:id="@+id/postToUrlEditText"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:inputType="textAutoComplete"
+            android:text="https://obd-rest-server.cfapps.io/postObd" />
+
+        <EditText
+            android:id="@+id/manualOdometerEditText"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:hint="Input Odometer Reading"
+            android:inputType="number"
+            android:ems="10"
+            android:text="0" />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/receivedNumeric"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="Received from car"
+                    android:inputType="number"
+                    android:text="0" />
+
+                <EditText
+                    android:id="@+id/sentNumeric"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="Sent to server"
+                    android:inputType="number"
+                    android:text="0" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/latitudeNumeric"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="Latitude"
+                    android:inputType="number"
+                    tools:text="0.0" />
+
+                <EditText
+                    android:id="@+id/altitudeNumeric"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="Altitude"
+                    android:inputType="number"
+                    tools:text="0.0" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/longitudeNumeric"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="Longitude"
+                    android:inputType="number"
+                    tools:text="0.0" />
+
+                <EditText
+                    android:id="@+id/bearingNumeric"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="Bearing"
+                    android:inputType="number"
+                    tools:text="0" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/startReadingButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Start Reading"
+                    tools:text="Start Reading" />
+
+                <Button
+                    android:id="@+id/stopReadingButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Stop Reading"
+                    tools:text="Stop Reading" />
+            </TableRow>
+        </TableLayout>
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
