@@ -125,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
     float tripEstimatedDistance = 0;
 
     OBD2Trip currentTrip = null;
+    String currentCarVin = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -186,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
             dataReader = new AsyncObd2DataReader();
             dataReader.readData = false;
 
+            currentTrip.obdVin = currentCarVin;
             currentTrip.endUTCTicks = new Date().getTime();
             currentTrip.estimatedDistance = tripEstimatedDistance / 1000f;
             currentTrip.estimatedEndOdometer =  currentTrip.manualStartOdometer + (int)(currentTrip.estimatedDistance);
@@ -606,6 +608,8 @@ public class MainActivity extends AppCompatActivity {
             {
                 vinCommand.run(socket.getInputStream(), socket.getOutputStream());
                 vinNo = vinCommand.getResult();
+
+                currentCarVin = vinNo;
 
                 Log.debug(TAG, "getResult() : " + vinCommand.getResult());
                 Log.debug(TAG, "getFormattedResult() : " + vinCommand.getFormattedResult());

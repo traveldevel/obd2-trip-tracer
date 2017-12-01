@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/OBD2TripTracer.iml" filepath="$PROJECT_DIR$/OBD2TripTracer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/obd2-trip-tracer.iml" filepath="$PROJECT_DIR$/obd2-trip-tracer.iml" />
       <module fileurl="file://$PROJECT_DIR$/obdtriptracerapp/obdtriptracerapp.iml" filepath="$PROJECT_DIR$/obdtriptracerapp/obdtriptracerapp.iml" />
     </modules>
   </component>
