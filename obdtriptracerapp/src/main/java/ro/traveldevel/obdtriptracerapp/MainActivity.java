@@ -1,9 +1,11 @@
 package ro.traveldevel.obdtriptracerapp;
 
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -122,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
 
     long tripStartUTCTicks = 0;
     int tripManualStartOdometer = 0;
-    float tripEstimatedDistance = 0;
+    double tripEstimatedDistance = 0;
 
     OBD2Trip currentTrip = null;
     String currentCarVin = "";
@@ -183,31 +185,56 @@ public class MainActivity extends AppCompatActivity {
         stopReadingButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-            dataReader.cancel(true);
-            dataReader = new AsyncObd2DataReader();
-            dataReader.readData = false;
+                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
 
-            currentTrip.obdVin = currentCarVin;
-            currentTrip.endUTCTicks = new Date().getTime();
-            currentTrip.estimatedDistance = tripEstimatedDistance / 1000f;
-            currentTrip.estimatedEndOdometer =  currentTrip.manualStartOdometer + (int)(currentTrip.estimatedDistance);
+                builder.setTitle("Confirm");
+                builder.setMessage("Are you sure?");
 
-            long diffTicks = currentTrip.endUTCTicks - currentTrip.startUTCTicks;
-            currentTrip.totalMinutes = diffTicks / 1000 / 60f;
+                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
 
-            if(currentTrip.totalMinutes > 0) {
-                currentTrip.averageSpeed = currentTrip.estimatedDistance / (currentTrip.totalMinutes / 60.00f);
-            }
-            else
-            {
-                currentTrip.averageSpeed = 0;
-            }
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
 
-            AsyncSaveTrip saveTripTask = new AsyncSaveTrip();
-            saveTripTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, currentTrip);
+                        dataReader.cancel(true);
+                        dataReader = new AsyncObd2DataReader();
+                        dataReader.readData = false;
 
-            startReadingButton.setVisibility(View.VISIBLE);
-            stopReadingButton.setVisibility(View.GONE);
+                        currentTrip.obdVin = currentCarVin;
+                        currentTrip.endUTCTicks = new Date().getTime();
+                        currentTrip.estimatedDistance = tripEstimatedDistance / 1000;
+                        currentTrip.estimatedEndOdometer =  currentTrip.manualStartOdometer + (int)(currentTrip.estimatedDistance);
+
+                        long diffTicks = currentTrip.endUTCTicks - currentTrip.startUTCTicks;
+                        currentTrip.totalMinutes = diffTicks / 1000 / 60f;
+
+                        if(currentTrip.totalMinutes > 0) {
+                            currentTrip.averageSpeed = currentTrip.estimatedDistance / (currentTrip.totalMinutes / 60.00f);
+                        }
+                        else
+                        {
+                            currentTrip.averageSpeed = 0;
+                        }
+
+                        AsyncSaveTrip saveTripTask = new AsyncSaveTrip();
+                        saveTripTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, currentTrip);
+
+                        startReadingButton.setVisibility(View.VISIBLE);
+                        stopReadingButton.setVisibility(View.GONE);
+                    }
+                });
+
+                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        // Do nothing
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog alert = builder.create();
+                alert.show();
             }
         });
 
@@ -523,7 +550,43 @@ public class MainActivity extends AppCompatActivity {
     private class AsyncObd2DataReader extends AsyncTask<String, Integer, Boolean> {
 
         public boolean readData;
+
+        private Location mLastDistanceLocation = null;
+
         private Exception exception;
+
+        private double roundToDecimals(double value, int precision) {
+            int scale = (int) Math.pow(10, precision);
+            return (double) Math.round(value * scale) / scale;
+        }
+
+        private double distance_between(Location l1, Location l2)
+        {
+            double lat1=l1.getLatitude();
+            double lon1=l1.getLongitude();
+            double lat2=l2.getLatitude();
+            double lon2=l2.getLongitude();
+            double R = 6371; // km
+            double dLat = (lat2-lat1)*Math.PI/180;
+            double dLon = (lon2-lon1)*Math.PI/180;
+            lat1 = lat1*Math.PI/180;
+            lat2 = lat2*Math.PI/180;
+
+            double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                    Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2);
+            double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            double d = R * c * 1000;
+
+            Log.debug(TAG, "private double distance_between : " +
+                    d + " " +
+                    l1.getLatitude()+ " " +
+                    l1.getLongitude() + " " +
+                    l2.getLatitude() + " " +
+                    l2.getLongitude()
+            );
+
+            return d;
+        }
 
         @Override
         protected Boolean doInBackground(String... params) {
@@ -650,17 +713,26 @@ public class MainActivity extends AppCompatActivity {
 
                     Location lastKnownLocation = mLocService.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                     if(lastKnownLocation != null) {
-                        if(mLastLocation != null) {
-                            float distance = lastKnownLocation.distanceTo(mLastLocation);
+
+                        mLastLocation = lastKnownLocation;
+
+                        if(mLastDistanceLocation != null) {
+
+                            double distance = distance_between(lastKnownLocation, mLastDistanceLocation);
+                            distance = roundToDecimals(distance, 1);
+
                             float accuracy = lastKnownLocation.getAccuracy();
+
+                            Log.debug(TAG, "Distance : " + String.valueOf(distance) + " , Accuracy : " + String.valueOf(accuracy));
+
                             if(distance > accuracy){
-                                mLastLocation = lastKnownLocation;
                                 tripEstimatedDistance += distance;
+                                mLastDistanceLocation = lastKnownLocation;
                             }
                         }
                         else
                         {
-                            mLastLocation = lastKnownLocation;
+                            mLastDistanceLocation = lastKnownLocation;
                         }
                     }
 
