@@ -547,6 +547,31 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private boolean haveNetworkConnection() {
+        boolean haveConnectedWifi = false;
+        boolean haveConnectedMobile = false;
+        boolean online = false;
+
+        try {
+            ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+            for (NetworkInfo ni : netInfo) {
+                if (ni.getTypeName().equalsIgnoreCase("WIFI"))
+                    if (ni.isConnected())
+                        haveConnectedWifi = true;
+                if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
+                    if (ni.isConnected())
+                        haveConnectedMobile = true;
+            }
+        }
+        catch(Exception err){
+            Log.debug(TAG, err.getMessage());
+        }
+
+        return (haveConnectedWifi || haveConnectedMobile);
+    }
+
+    // async tasks start here
     private class AsyncObd2DataReader extends AsyncTask<String, Integer, Boolean> {
 
         public boolean readData;
@@ -688,6 +713,11 @@ public class MainActivity extends AppCompatActivity {
             // read obd data loop
             while (!Thread.currentThread().isInterrupted() && this.readData)
             {
+                if(isCancelled())
+                {
+                    break;
+                }
+
                 Log.debug(TAG, "START OBD READ CYCLE...");
 
                 try
@@ -888,30 +918,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private boolean haveNetworkConnection() {
-        boolean haveConnectedWifi = false;
-        boolean haveConnectedMobile = false;
-        boolean online = false;
-
-        try {
-            ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo[] netInfo = cm.getAllNetworkInfo();
-            for (NetworkInfo ni : netInfo) {
-                if (ni.getTypeName().equalsIgnoreCase("WIFI"))
-                    if (ni.isConnected())
-                        haveConnectedWifi = true;
-                if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
-                    if (ni.isConnected())
-                        haveConnectedMobile = true;
-            }
-        }
-        catch(Exception err){
-            Log.debug(TAG, err.getMessage());
-        }
-
-        return (haveConnectedWifi || haveConnectedMobile);
-    }
-
     private class AsyncCheckForGoogleConnection extends AsyncTask<String, Void, Boolean> {
 
         private Exception exception;
@@ -956,6 +962,11 @@ public class MainActivity extends AppCompatActivity {
 
             int x = 0;
             while (!Thread.currentThread().isInterrupted()) {
+
+                if(isCancelled())
+                {
+                    break;
+                }
 
                 recordRepository.refreshRepository();
                 tripRepository.refreshRepository();
