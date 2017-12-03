@@ -4,6 +4,7 @@ public class Constants {
     public static final String DATABASE_NAME = "OBD2TripTracer";
     public static final int OBD_UPDATE_PERIOD = 2000; //ms
     public static final int SEND_DATA_PERIOD = 10000; //ms
+    public static final int SEND_MAX_RECORDS_COUNT = 50; //ms
 
     public static final int GPS_UPDATE_PERIOD = 1;
     public static final int GPS_UPDATE_DISTANCE = 10;

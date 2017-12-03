@@ -19,6 +19,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -49,8 +50,12 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Set;
 
 import ro.traveldevel.config.Constants;
@@ -982,64 +987,80 @@ public class MainActivity extends AppCompatActivity {
 
                 if(size > 0) {
 
-                    // send records
-                    Log.debug(TAG, "Trying to send data...");
+                    int packages = size / Constants.SEND_MAX_RECORDS_COUNT + 1;
 
-                    boolean sent = false;
-                    try {
-                        String url = params[0];
-                        URL object = new URL(url);
+                    for(int i = 0; i < packages; i++) {
 
-                        HttpURLConnection conn = (HttpURLConnection) object.openConnection();
-                        conn.setDoOutput(true);
-                        conn.setDoInput(true);
-                        conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-                        conn.setRequestMethod("POST");
+                        List<OBD2Record> recordsToSend = new ArrayList<OBD2Record>();
 
-                        Gson gson = new Gson();
-                        String json = gson.toJson(records);
-
-                        OutputStream os = conn.getOutputStream();
-                        os.write(json.getBytes("UTF-8"));
-                        os.close();
-
-                        String response = conn.getResponseMessage();
-                        if(conn.getResponseCode() == 200) {
-                            sent = true;
+                        int max = (i + 1) * Constants.SEND_MAX_RECORDS_COUNT;
+                        if (max > size) {
+                            max = size;
                         }
-                        else
-                        {
+
+                        // send records
+                        Log.debug(TAG, "Trying to send data...");
+
+                        boolean sent = false;
+                        try {
+                            String url = params[0];
+                            URL object = new URL(url);
+
+                            HttpURLConnection conn = (HttpURLConnection) object.openConnection();
+                            conn.setDoOutput(true);
+                            conn.setDoInput(true);
+                            conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+                            conn.setRequestMethod("POST");
+
+                            Gson gson = new Gson();
+
+                            recordsToSend = records.subList(i * Constants.SEND_MAX_RECORDS_COUNT, max);
+                            String json = gson.toJson(recordsToSend);
+
+                            OutputStream os = conn.getOutputStream();
+                            os.write(json.getBytes("UTF-8"));
+                            os.close();
+
+                            String response = conn.getResponseMessage();
+                            int respCode = conn.getResponseCode();
+
+                            if (respCode == 200) {
+                                sent = true;
+                            } else {
+                                sent = false;
+                                String respMessage = conn.getResponseMessage();
+
+                                Log.debug(TAG, "Send error : " + respMessage);
+                            }
+                        } catch (Exception err) {
                             sent = false;
+                            Log.debug(TAG, "Send error : " + err.getMessage());
                         }
-                    }
-                    catch(Exception err){
-                        sent = false;
-                        Log.debug(TAG, "Send error : " + err.getMessage());
-                    }
 
-                    // delete records
-//                    if(sent) {
-//                        for (int i = 0; i < size; i++) {
-//                            OBD2Record rec = records.get(i);
-//                            recordRepository.deleteRecord(rec.id);
-//                        }
+                        // delete records
+//                        if(sent) {
+//                            for (int j = 0; j < recordsToSend.size(); j++) {
+//                                OBD2Record rec = recordsToSend.get(i);
+//                                recordRepository.deleteRecord(rec.id);
+//                            }
 //
-//                        x += size;
-//                        publishProgress(x);
-//                    }
+//                            x += recordsToSend.size();
+//                            publishProgress(x);
+//                        }
 
-                    // update the sent flag and keep in history
-                    if(sent) {
-                        for (int i = 0; i < size; i++) {
-                            OBD2Record rec = records.get(i);
-                            rec.sent = 1;
-                            recordRepository.updateRecord(rec);
+                        // update the sent flag and keep in history
+                        if (sent) {
+                            for (int j = 0; j < recordsToSend.size(); j++) {
+                                OBD2Record rec = recordsToSend.get(j);
+                                rec.sent = 1;
+                                recordRepository.updateRecord(rec);
+                            }
+
+                            Log.debug(TAG, "Updated sent records.");
+
+                            x += recordsToSend.size();
+                            publishProgress(x);
                         }
-
-                        Log.debug(TAG, "Updated sent records.");
-
-                        x += size;
-                        publishProgress(x);
                     }
                 }
 
