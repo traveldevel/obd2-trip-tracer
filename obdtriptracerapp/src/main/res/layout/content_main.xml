@@ -18,41 +18,65 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <CheckBox
-            android:id="@+id/orientSensorCheckbox"
+        <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Orientation Sensor exists" />
+            android:layout_height="wrap_content">
 
-        <CheckBox
-            android:id="@+id/accelerometerSensorCheckbox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Accelerometer sensor is present" />
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <CheckBox
-            android:id="@+id/gpsIsEnabledCheckbox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="GPS is enabled" />
+                <CheckBox
+                    android:id="@+id/orientSensorCheckbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Orientation Sensor" />
 
-        <CheckBox
-            android:id="@+id/buletoothOnCheckbox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Bluetooth is ON" />
+                <CheckBox
+                    android:id="@+id/accelerometerSensorCheckbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Accelerometer sensor" />
 
-        <CheckBox
-            android:id="@+id/obd2IsPairedCheckbox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="OBD2 Is Paired" />
+            </TableRow>
 
-        <CheckBox
-            android:id="@+id/internetConnectedCheckbox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Is Connected to Internet" />
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <CheckBox
+                    android:id="@+id/gpsIsEnabledCheckbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="GPS is enabled" />
+
+                <CheckBox
+                    android:id="@+id/buletoothOnCheckbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Bluetooth is ON" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <CheckBox
+                    android:id="@+id/obd2IsPairedCheckbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="OBD2 Is Paired" />
+
+                <CheckBox
+                    android:id="@+id/internetConnectedCheckbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Connected to Internet" />
+
+            </TableRow>
+
+        </TableLayout>
 
         <CheckBox
             android:id="@+id/receivingObd2DataCheckbox"
