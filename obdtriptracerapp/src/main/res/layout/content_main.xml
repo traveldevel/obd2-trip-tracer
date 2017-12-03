@@ -60,21 +60,34 @@
             android:layout_height="wrap_content"
             android:text="Receiving OBD2 measures" />
 
-        <EditText
-            android:id="@+id/postToUrlEditText"
-            android:layout_height="wrap_content"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:inputType="textAutoComplete"
-            android:text="https://obd-rest-server.cfapps.io/postObd" />
+            android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/manualOdometerEditText"
-            android:layout_height="wrap_content"
+            <EditText
+                android:id="@+id/postToUrlEditText"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:inputType="textAutoComplete"
+                android:text="https://obd-rest-server.cfapps.io/postObd"
+                android:hint="Post Records To URL"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:hint="Input Odometer Reading"
-            android:inputType="number"
-            android:ems="10"
-            android:text="0" />
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/manualOdometerEditText"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:hint="Input Odometer Reading"
+                android:inputType="number"
+                android:ems="10"
+                android:text="0" />
+
+        </android.support.design.widget.TextInputLayout>
 
         <TableLayout
             android:layout_width="match_parent"
@@ -84,25 +97,74 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <EditText
-                    android:id="@+id/receivedNumeric"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="Received from car"
-                    android:inputType="number"
-                    android:text="0" />
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <EditText
-                    android:id="@+id/sentNumeric"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="Sent to server"
-                    android:inputType="number"
-                    android:text="0" />
+                    <EditText
+                        android:id="@+id/receivedNumeric"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:hint="Received from car"
+                        android:inputType="number"
+                        android:text="0" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/sentNumeric"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:hint="Sent to server"
+                        android:inputType="number"
+                        android:text="0" />
+
+                </android.support.design.widget.TextInputLayout>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/latitudeNumeric"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:hint="Latitude"
+                        android:inputType="number"
+                        android:text="0.0" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/altitudeNumeric"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:hint="Altitude"
+                        android:inputType="number"
+                        android:text="0.0" />
+
+                </android.support.design.widget.TextInputLayout>
 
             </TableRow>
 
@@ -110,51 +172,38 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <EditText
-                    android:id="@+id/latitudeNumeric"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="Latitude"
-                    android:inputType="number"
-                    tools:text="0.0" />
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <EditText
-                    android:id="@+id/altitudeNumeric"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="Altitude"
-                    android:inputType="number"
-                    tools:text="0.0" />
+                    <EditText
+                        android:id="@+id/longitudeNumeric"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:hint="Longitude"
+                        android:inputType="number"
+                        android:text="0.0" />
 
-            </TableRow>
+                </android.support.design.widget.TextInputLayout>
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <EditText
-                    android:id="@+id/longitudeNumeric"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="Longitude"
-                    android:inputType="number"
-                    tools:text="0.0" />
+                    <EditText
+                        android:id="@+id/bearingNumeric"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:hint="Bearing"
+                        android:inputType="number"
+                        android:text="0" />
 
-                <EditText
-                    android:id="@+id/bearingNumeric"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="Bearing"
-                    android:inputType="number"
-                    tools:text="0" />
+                </android.support.design.widget.TextInputLayout>
+
             </TableRow>
 
             <TableRow
