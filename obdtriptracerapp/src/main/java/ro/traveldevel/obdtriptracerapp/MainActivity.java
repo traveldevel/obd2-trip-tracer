@@ -220,8 +220,14 @@ public class MainActivity extends AppCompatActivity {
                             currentTrip.averageSpeed = 0;
                         }
 
-                        AsyncSaveTrip saveTripTask = new AsyncSaveTrip();
-                        saveTripTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, currentTrip);
+                        if(currentTrip.obdVin.length() > 0) {
+                            AsyncSaveTrip saveTripTask = new AsyncSaveTrip();
+                            saveTripTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, currentTrip);
+                        }
+                        else
+                        {
+                            Toast.makeText(getApplicationContext(), "Trip dropped : NO VIN !", Toast.LENGTH_SHORT).show();
+                        }
 
                         startReadingButton.setVisibility(View.VISIBLE);
                         stopReadingButton.setVisibility(View.GONE);
@@ -695,31 +701,12 @@ public class MainActivity extends AppCompatActivity {
             LoadCommand engineLoadCommand = new LoadCommand();
             VinCommand vinCommand = new VinCommand();
 
-            // take car vin at first
-            String vinNo = "";
-            try
-            {
-                vinCommand.run(socket.getInputStream(), socket.getOutputStream());
-                vinNo = vinCommand.getResult();
-
-                currentCarVin = vinNo;
-
-                Log.debug(TAG, "getResult() : " + vinCommand.getResult());
-                Log.debug(TAG, "getFormattedResult() : " + vinCommand.getFormattedResult());
-                Log.debug(TAG, "getCalculatedResult() : " + vinCommand.getCalculatedResult());
-
-                socket.close();
-            }
-            catch (Exception e) {
-                // handle errors
-                Log.debug(TAG, "OBD2 VIN Error : " + e.getMessage());
-            }
-
             // read obd data loop
             while (!Thread.currentThread().isInterrupted() && this.readData)
             {
                 if(isCancelled())
                 {
+                    this.readData = false;
                     break;
                 }
 
@@ -733,9 +720,28 @@ public class MainActivity extends AppCompatActivity {
                     Log.debug(TAG, "SOCKET CONNECT ERROR : " + berr.getMessage());
                 }
 
-                if (isCancelled())  {
-                    this.readData = false;
-                    break;
+                // take car vin if none present
+                if(currentCarVin.length() == 0) {
+
+                    Log.debug(TAG, "GET CAR VIN...");
+
+                    String vinNo = "";
+
+                    try {
+                        vinCommand.run(socket.getInputStream(), socket.getOutputStream());
+                        vinNo = vinCommand.getResult();
+
+                        currentCarVin = vinNo;
+
+                        Log.debug(TAG, "getResult() : " + vinCommand.getResult());
+                        Log.debug(TAG, "getFormattedResult() : " + vinCommand.getFormattedResult());
+                        Log.debug(TAG, "getCalculatedResult() : " + vinCommand.getCalculatedResult());
+
+                        socket.close();
+                    } catch (Exception e) {
+                        // handle errors
+                        Log.debug(TAG, "OBD2 VIN Error : " + e.getMessage());
+                    }
                 }
 
                 try
@@ -743,7 +749,7 @@ public class MainActivity extends AppCompatActivity {
                     OBD2Record record = new OBD2Record();
 
                     record.UTCTicks = DateHelper.getUTCTicks(new Date());
-                    record.obdVin = vinNo;
+                    record.obdVin = currentCarVin;
                     record.manualOdometer = odoValue;
 
                     Location lastKnownLocation = mLocService.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -859,7 +865,14 @@ public class MainActivity extends AppCompatActivity {
                         socket.close();
                     }
 
-                    recordRepository.createRecord(record);
+                    if(record.obdVin.length() > 0) {
+                        recordRepository.createRecord(record);
+                    }
+                    else
+                    {
+                        Log.debug(TAG, "Drop record, NO VIN !");
+                        publishProgress(-1);
+                    }
 
                     try {
                         Thread.sleep(Constants.OBD_UPDATE_PERIOD);
@@ -891,7 +904,13 @@ public class MainActivity extends AppCompatActivity {
                 receivingObd2DataCheckbox.setChecked(true);
 
                 int old = Integer.parseInt(receivedNumeric.getText().toString());
-                receivedNumeric.setText(String.valueOf( old + values[0]));
+                if(values[0] > 0) {
+                    receivedNumeric.setText(String.valueOf(old + values[0]));
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(), "Record dropped : NO VIN !", Toast.LENGTH_SHORT).show();
+                }
             }
             catch (Exception e) {
                 Log.debug(TAG, "Error: " +  e.getMessage());
